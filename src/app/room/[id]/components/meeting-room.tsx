@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { JitsiMeeting, JitsiMeetingApi } from "@jitsi/react-sdk";
+import { JitsiMeeting } from "@jitsi/react-sdk";
 import Controls from "./controls";
 import { Button } from "@/components/ui/button";
 import { Loader2, Mic, MicOff, Video, VideoOff } from "lucide-react";
@@ -17,7 +17,7 @@ export default function MeetingRoom({ roomId, role }: { roomId: string, role: 'h
   const [hasPermissions, setHasPermissions] = useState<boolean | null>(null);
   const [hasJoined, setHasJoined] = useState(false);
 
-  const jitsiApiRef = useRef<JitsiMeetingApi | null>(null);
+  const jitsiApiRef = useRef<any>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { toast } = useToast();
   
@@ -53,7 +53,7 @@ export default function MeetingRoom({ roomId, role }: { roomId: string, role: 'h
     setHasJoined(true);
   };
 
-  const handleApiReady = (api: JitsiMeetingApi) => {
+  const handleApiReady = (api: any) => {
     jitsiApiRef.current = api;
     setLoading(false);
     
@@ -119,7 +119,7 @@ export default function MeetingRoom({ roomId, role }: { roomId: string, role: 'h
         <JitsiMeeting
             domain="8x8.vc"
             roomName={`${JITSI_APP_ID}/AstroMeet-${roomId}`}
-            userInfo={{ displayName: role === 'host' ? 'Astrologer' : 'Client' }}
+            userInfo={{ displayName: role === 'host' ? 'Astrologer' : 'Client' , email:"jayanth@gmail.com"}}
             configOverwrite={{
                 startWithAudioMuted: !isMicOn,
                 startWithVideoMuted: !isCameraOn,

@@ -30,17 +30,16 @@ const summarizeFlow = ai.defineFlow(
       return "The meeting transcript was empty.";
     }
 
-    const llmResponse = await ai.generate({
-      prompt: `Summarize the following astrology consultation transcript. Focus on the key questions asked and the core advice given. Keep it concise and clear.
+    const llmResponse = await ai.generate(
+      `Summarize the following astrology consultation transcript. Focus on the key questions asked and the core advice given. Keep it concise and clear.
         
         Transcript:
         ---
         ${transcript}
         ---
         
-        Summary:`,
-      temperature: 0.3,
-    });
+        Summary:`
+    );
     
     return llmResponse.text;
   }
