@@ -1,20 +1,26 @@
+"use client";
+
+import { Suspense } from 'react';
 import MeetingRoom from "./components/meeting-room";
-import { redirect } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 
-export default async function RoomPage({ params, searchParams }: { params: { id: string }, searchParams: { [key: string]: string | string[] | undefined } }) {
-  const role = searchParams?.role;
+// Update your props type to match Next.js expectations
+type RoomPageProps = {
+  params: Promise<{ id: string }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+};
 
-  if (role === 'user' || role === 'user-joining') {
-     // In a real app, you would check if the host is present.
-     // For this simulation, we will redirect users to a waiting page first.
-     // The host link (?role=host) will bypass this check.
-     if (role === 'user') {
-        return redirect(`/room/${params.id}/wait`);
-     }
-  }
-
-  // The 'host' or a user who clicked "Try to Join" from the waiting page will land here.
-  const meetingRole = role === 'host' ? 'host' : 'user';
+export default async function RoomPage({ params }: RoomPageProps) {
+  // Await the params promise
+  const resolvedParams = await params;
   
-  return <MeetingRoom roomId={params.id} role={meetingRole} />;
+  return (
+    <Suspense fallback={
+      <div className="flex h-screen w-full items-center justify-center bg-background">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    }>
+      <MeetingRoom roomId={resolvedParams.id} />
+    </Suspense>
+  );
 }
